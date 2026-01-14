@@ -77,6 +77,17 @@ const fetchPlans = async () => {
     loading.value = false
   }
 }
+
+const openMail = () => {
+  const email = 'empresatechorg@gmail.com'
+  const subject = encodeURIComponent('Empresa – Early Access')
+  const body = encodeURIComponent(
+    `Hello Empresa Team,\n\nI’m interested in early access.\n\nName:\nCompany:\nMessage:\n`
+  )
+
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
+}
+
 // watch(
 //   () => props.isOpen,
 //   (open) => {
@@ -270,7 +281,7 @@ watch(
 
               <button
                 class="mt-8 rounded-full bg-white text-black px-8 py-3 text-sm font-semibold hover:bg-white/90 transition"
-                @click="$emit('open-login')"
+                @click="openMail"
               >
                 Join Early Access
               </button>
