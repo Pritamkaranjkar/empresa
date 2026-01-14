@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
 import ModulesDialog from '../components/ModulesDialog.vue'
 
+const isLocalhost = window.location.hostname === 'localhost'
+
 const isModulesOpen = ref(false)
 const selectedModules = ref([])
 const selectedPlanName = ref('')
@@ -75,10 +77,18 @@ const fetchPlans = async () => {
     loading.value = false
   }
 }
+// watch(
+//   () => props.isOpen,
+//   (open) => {
+//     if (open) fetchPlans()
+//   }
+// )
 watch(
   () => props.isOpen,
   (open) => {
-    if (open) fetchPlans()
+    if (open && isLocalhost) {
+      fetchPlans()
+    }
   }
 )
 </script>
@@ -120,6 +130,7 @@ watch(
         <!-- Content -->
         <div class="hide-modal-scroll max-h-[95vh] overflow-y-auto px-5 py-8 sm:p-16">
           <!-- Header -->
+          <template v-if="isLocalhost">
           <div class="mb-12 sm:mb-16 text-center">
             <span
               class="mb-4 inline-block rounded-full bg-white/10 px-3 py-1 text-[10px] sm:text-xs font-semibold text-white/70"
@@ -241,6 +252,30 @@ watch(
               Contact Sales
             </button>
           </div>
+          </template>
+          <template v-else>
+            <div class="flex flex-col items-center justify-center text-center py-24 sm:py-32">
+              <span class="mb-4 inline-block rounded-full bg-white/10 px-4 py-1 text-xs font-semibold text-white/60 tracking-wider">
+                COMING SOON
+              </span>
+
+              <h2 class="text-4xl sm:text-6xl font-bold tracking-tight mb-6">
+                Pricing launching soon
+              </h2>
+
+              <p class="text-white/50 max-w-md text-base sm:text-lg">
+                We’re finalizing our pricing model.  
+                Sign up now to get early access and updates.
+              </p>
+
+              <button
+                class="mt-8 rounded-full bg-white text-black px-8 py-3 text-sm font-semibold hover:bg-white/90 transition"
+                @click="$emit('open-login')"
+              >
+                Join Early Access
+              </button>
+            </div>
+          </template>
         </div>
       </div>
     </div>
