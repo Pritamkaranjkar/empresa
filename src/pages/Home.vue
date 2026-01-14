@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-[#FBFBFB] text-[#1D1D1F] font-sans antialiased selection:bg-[#007AFF]/20 overflow-x-hidden">
     <!-- Importing and adding AuthModal and PricingModal -->
     <AuthModal :is-open="isAuthOpen" @close="isAuthOpen = false" @open-register="() => { isAuthOpen = false; isRegisterOpen = true }" />
-    <PricingModal :is-open="isPricingOpen" @close="isPricingOpen = false"  @open-login="isAuthOpen = true" />
+    <PricingModal :is-open="isPricingOpen" @close="isPricingOpen = false"  @open-login="showAuth && (isAuthOpen = true)" />
     <RegisterModal :is-open="isRegisterOpen" @close="isRegisterOpen = false" @open-login="() => { isRegisterOpen = false; isAuthOpen = true }" />
     
     <!-- Navigation -->
@@ -22,7 +22,7 @@
         </div>
         <div class="flex items-center gap-5">
           <!-- desktop only links hidden on small screens -->
-          <button @click="isAuthOpen = true" class="hidden sm:block text-[13px] font-medium text-black/60 hover:text-black transition-colors">Log In</button>
+          <button v-if="showAuth" @click="isAuthOpen = true" class="hidden sm:block text-[13px] font-medium text-black/60 hover:text-black transition-colors">Log In</button>
           <button @click="isPricingOpen = true" class="bg-black text-white px-5 py-2 rounded-full text-[13px] font-medium hover:bg-black/80 transition-all active:scale-95 shadow-lg shadow-black/5">
             Book a Demo
           </button>
@@ -57,7 +57,7 @@
               {{ link }}
             </a>
           </div>
-          <div class="pt-6 border-t border-black/5 flex flex-col gap-4">
+          <div v-if="showAuth" class="pt-6 border-t border-black/5 flex flex-col gap-4">
             <button @click="isAuthOpen = true; isMenuOpen = false" class="text-lg font-medium text-black/60 text-left">Log In</button>
           </div>
         </div>
@@ -294,7 +294,7 @@
         </div>
       </div>
       <div class="max-w-7xl mx-auto mt-16 md:mt-24 pt-10 md:pt-12 border-t border-black/5 flex flex-col sm:flex-row justify-between items-center text-[10px] md:text-[11px] text-black/30 font-medium tracking-wide gap-6">
-        <p class="text-center sm:text-left">&copy; 2025 Empresa Inc. Designed in California. All rights reserved.</p>
+        <p class="text-center sm:text-left">&copy; 2026 Empresa Inc. Designed in India. All rights reserved.</p>
         <div class="flex gap-6 md:gap-8">
           <a href="#" class="hover:text-black transition-colors uppercase">Privacy</a>
           <a href="#" class="hover:text-black transition-colors uppercase">Terms</a>
@@ -310,6 +310,8 @@ import { ref, onMounted } from 'vue'
 import PricingModal from '../components/Pricing.vue'
 import AuthModal from '../pages/Login.vue'
 import RegisterModal from '../pages/Register.vue'
+
+const showAuth = window.location.hostname === 'localhost'
 
 const isMounted = ref(false)
 const isPricingOpen = ref(false)
@@ -361,7 +363,7 @@ const footerLinks = [
   },
   {
     title: 'Company',
-    links: ['About', 'News', 'Contact', 'Careers']
+    links: ['About', 'News', 'Contact']
   },
   {
     title: 'Support',
